@@ -1,19 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
+    "outDir": "dist",
+    "baseUrl": "./src",
     "rootDir": "src",
     "target": "esnext",
-    "module": "commonjs",
+    "module": "ES2020",
     "declaration": true,
     "emitDeclarationOnly": true,
-    "composite": true,
-    "incremental": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "strictBindCallApply": true,
+    "strictBindCallApply": true
   },
-  "include": [
-    "src",
-  ],
+  "include": ["src/*.ts"]
 }
