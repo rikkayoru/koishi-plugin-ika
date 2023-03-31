@@ -12,5 +12,9 @@
     "moduleResolution": "node",
     "strictBindCallApply": true
   },
-  "include": ["src/*.ts"]
+  "include": [
+    "src/*.ts",
+    "src/chat/conversation.ts",
+    "src/chat/query-client.ts"
+  ]
 }
