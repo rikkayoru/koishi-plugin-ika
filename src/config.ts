@@ -4,6 +4,7 @@ export default interface Config {
     system?: string
     proxy?: string
     apiKey: string
+    basePath?: string
   }
   news: {
     enable: boolean

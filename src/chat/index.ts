@@ -5,10 +5,11 @@ import { getOpenAIClient } from './query-client'
 
 export const applyChatMiddleware = (ctx: Context, config: Config) => {
   const logger = ctx.logger('Ika')
-  const botName = ctx.root.config.nickname || 'ika'
+  // const botName = ctx.root.config.nickname || 'ika'
 
   const openAIClient = getOpenAIClient({
     apiKey: config.chat.apiKey,
+    basePath: config.chat.basePath,
     proxy: config.chat.proxy,
   })
 

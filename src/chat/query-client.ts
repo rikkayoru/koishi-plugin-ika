@@ -3,6 +3,7 @@ import { SocksProxyAgent } from 'socks-proxy-agent'
 
 export const getOpenAIClient = (options: {
   apiKey: string
+  basePath?: string
   proxy?: string
 }) => {
   const { apiKey, proxy } = options
@@ -18,8 +19,11 @@ export const getOpenAIClient = (options: {
     baseOptions[`httpsAgent`] = httpsAgent
   }
 
+  const basePath = options.basePath.replace(/\/+$/, '')
+
   const configuration = new Configuration({
     apiKey,
+    basePath,
     baseOptions,
   })
 
