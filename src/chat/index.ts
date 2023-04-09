@@ -13,47 +13,63 @@ export const applyChatMiddleware = (ctx: Context, config: Config) => {
     proxy: config.chat.proxy,
   })
 
+  const chatIt = async (userId: string, content: string) => {
+    try {
+      const chatContent = content.trim()
+      const completion = await openAIClient.createChatCompletion({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: config.chat.system,
+          },
+          ...getContext(userId)
+            .map((context) => {
+              return [
+                { role: 'user' as const, content: context.q },
+                { role: 'assistant' as const, content: context.a },
+              ]
+            })
+            .flat(),
+          { role: 'user', content: chatContent },
+        ],
+        temperature: 0.8,
+      })
+
+      const respContent = completion.data.choices[0].message.content
+
+      // save context for next chat
+      pushContext(userId, {
+        q: chatContent,
+        a: respContent,
+      })
+
+      return respContent
+    } catch (e) {
+      logger.error(e.response ? e.response.data : e.message)
+      return '?????'
+    }
+  }
+
   ctx.middleware(async (session, next) => {
     if (session.parsed.appel) {
       const content = session.parsed.content
 
-      try {
-        const chatContent = content.trim()
-        const completion = await openAIClient.createChatCompletion({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            {
-              role: 'system',
-              content: config.chat.system,
-            },
-            ...getContext(session.userId)
-              .map((context) => {
-                return [
-                  { role: 'user' as const, content: context.q },
-                  { role: 'assistant' as const, content: context.a },
-                ]
-              })
-              .flat(),
-            { role: 'user', content: chatContent },
-          ],
-          temperature: 0.8,
-        })
+      const respContent = await chatIt(session.userId, content)
 
-        const respContent = completion.data.choices[0].message.content
-
-        // save context for next chat
-        pushContext(session.userId, {
-          q: chatContent,
-          a: respContent,
-        })
-
-        session.send(respContent)
-      } catch (e) {
-        logger.error(e.response ? e.response.data : e.message)
-        session.send('?????')
-      }
+      session.send(respContent)
     } else {
       return next()
     }
   })
+
+  if (config.chat.useCommand) {
+    ctx.command('chat').action(async ({ session }) => {
+      const content = session.parsed.content
+
+      const respContent = await chatIt(session.userId, content)
+
+      return respContent
+    })
+  }
 }

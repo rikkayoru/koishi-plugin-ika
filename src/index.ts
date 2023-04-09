@@ -12,7 +12,8 @@ export * from './config'
 export const Config: Schema<Config> = Schema.object({
   // chat
   chat: Schema.object({
-    enable: Schema.boolean().description('启用 Chat').default(true),
+    enable: Schema.boolean().description('启用 Chat, 默认用 @').default(true),
+    useCommand: Schema.boolean().description('启用 chat 命令').default(false),
     system: Schema.string()
       .description('人设')
       .default(
@@ -23,7 +24,7 @@ export const Config: Schema<Config> = Schema.object({
       .default('socks://127.0.0.1:1080'),
     apiKey: Schema.string().description('Api Key').default(''),
     basePath: Schema.string()
-      .description('接口地址, 为空则使用默认(https://api.openai.com/v1)')
+      .description('接口地址, 为空则使用默认 (https://api.openai.com/v1)')
       .default(''),
   }).description('Chat 设置'),
 
