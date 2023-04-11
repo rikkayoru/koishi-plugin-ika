@@ -76,10 +76,12 @@ export const applyChatMiddleware = (ctx: Context, config: Config) => {
   })
 
   if (config.chat.useCommand) {
-    ctx.command('chat <message:text>').action(async ({ session }, message) => {
-      const respContent = await chatIt(session.userId, message)
+    ctx
+      .command('chat <message:text>', '对话, 使用 clear. 清除上下文')
+      .action(async ({ session }, message) => {
+        const respContent = await chatIt(session.userId, message)
 
-      return respContent
-    })
+        return respContent
+      })
   }
 }
