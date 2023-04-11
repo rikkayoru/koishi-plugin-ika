@@ -30,3 +30,7 @@ export const getContext = (uid: string) => {
 
   return conversation ?? []
 }
+
+export const clearContext = (uid: string) => {
+  delete conversations[uid]
+}

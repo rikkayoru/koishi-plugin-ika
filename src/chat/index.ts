@@ -1,6 +1,6 @@
 import { Context } from 'koishi'
 import Config from '../config'
-import { getContext, pushContext } from './conversation'
+import { clearContext, getContext, pushContext } from './conversation'
 import { getOpenAIClient } from './query-client'
 
 export const applyChatMiddleware = (ctx: Context, config: Config) => {
@@ -16,6 +16,12 @@ export const applyChatMiddleware = (ctx: Context, config: Config) => {
   const chatIt = async (userId: string, content: string) => {
     try {
       const chatContent = content.trim()
+
+      if (chatContent === 'clear') {
+        clearContext(userId)
+        return '🎉'
+      }
+
       const completion = await openAIClient.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [
@@ -51,6 +57,7 @@ export const applyChatMiddleware = (ctx: Context, config: Config) => {
     }
   }
 
+  // @ action
   ctx.middleware(async (session, next) => {
     if (session.parsed.appel) {
       const content = session.parsed.content
