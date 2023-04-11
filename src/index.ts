@@ -4,7 +4,7 @@ import { applyNewsMiddleware } from './news'
 
 export const name = 'Ika'
 
-export const usage = 'Chat (`clear` to remove context).'
+export const usage = 'Chat (使用 `clear.` 清除上下文).'
 
 import Config from './config'
 export * from './config'

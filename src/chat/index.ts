@@ -17,7 +17,12 @@ export const applyChatMiddleware = (ctx: Context, config: Config) => {
     try {
       const chatContent = content.trim()
 
-      if (chatContent === 'clear') {
+      if (chatContent === '') {
+        return '??????'
+      }
+
+      // why `clear` break on @ ????
+      if (chatContent === 'clear.') {
         clearContext(userId)
         return '🎉'
       }
@@ -71,10 +76,8 @@ export const applyChatMiddleware = (ctx: Context, config: Config) => {
   })
 
   if (config.chat.useCommand) {
-    ctx.command('chat').action(async ({ session }) => {
-      const content = session.parsed.content
-
-      const respContent = await chatIt(session.userId, content)
+    ctx.command('chat <message:text>').action(async ({ session }, message) => {
+      const respContent = await chatIt(session.userId, message)
 
       return respContent
     })
