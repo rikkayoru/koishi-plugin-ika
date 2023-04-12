@@ -62,18 +62,22 @@ export const applyChatMiddleware = (ctx: Context, config: Config) => {
     }
   }
 
-  // @ action
-  ctx.middleware(async (session, next) => {
-    if (session.parsed.appel) {
-      const content = session.parsed.content
+  if (config.chat.useAt) {
+    // @ action
+    ctx.middleware(async (session, next) => {
+      if (session.parsed.appel) {
+        if (ctx.bots[session.uid]) return
 
-      const respContent = await chatIt(session.userId, content)
+        const content = session.parsed.content
 
-      session.send(respContent)
-    } else {
-      return next()
-    }
-  })
+        const respContent = await chatIt(session.userId, content)
+
+        session.send(respContent)
+      } else {
+        return next()
+      }
+    })
+  }
 
   if (config.chat.useCommand) {
     ctx

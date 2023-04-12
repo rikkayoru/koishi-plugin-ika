@@ -1,6 +1,7 @@
 export default interface Config {
   chat: {
     enable: boolean
+    useAt: boolean
     useCommand: boolean
     system?: string
     proxy?: string

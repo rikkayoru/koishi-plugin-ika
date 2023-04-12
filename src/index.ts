@@ -12,7 +12,10 @@ export * from './config'
 export const Config: Schema<Config> = Schema.object({
   // chat
   chat: Schema.object({
-    enable: Schema.boolean().description('启用 Chat, 默认用 @').default(true),
+    enable: Schema.boolean()
+      .description('启用 Chat, @ 和 命令可选启用')
+      .default(true),
+    useAt: Schema.boolean().description('启用 @').default(true),
     useCommand: Schema.boolean().description('启用 chat 命令').default(false),
     system: Schema.string()
       .description('人设')
