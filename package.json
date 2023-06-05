@@ -1,6 +1,6 @@
 {
   "name": "koishi-plugin-ika",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Ika bot",
   "repository": {
     "type": "git",
@@ -24,8 +24,7 @@
   "koishi": {
     "description": {
       "zh": "Ika bot"
-    },
-    "preview": true
+    }
   },
   "devDependencies": {
     "@types/node": "^18.15.5",
