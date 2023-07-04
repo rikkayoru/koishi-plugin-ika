@@ -36,7 +36,7 @@ export const Config: Schema<Config> = Schema.object({
     enable: Schema.boolean().description('启用 news 命令').default(false),
     vendor: Schema.string()
       .description('新闻源, 直接返回图片的那种')
-      .default('https://api.vvhan.com/api/60s'),
+      .default('https://api.emoao.com/api/60s'),
   }).description('每日新闻'),
 })
 
